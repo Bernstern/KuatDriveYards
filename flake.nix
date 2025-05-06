@@ -53,6 +53,7 @@
                 "nikitabobko/tap/aerospace"
                 "shortcat"
                 "iterm2"
+                "signal"
               ];
               taps = [
                 "nikitabobko/tap"
