@@ -7,6 +7,8 @@
     htop
     wget
     vim
+    docker
+    docker-compose
   ];
 
   programs.fish = {
@@ -20,6 +22,25 @@
       fish_add_path ~/.nix-profile/bin
       fish_add_path /nix/var/nix/profiles/default/bin
       fish_add_path /run/current-system/sw/bin
+
+      # Initialize Fisher
+      if not functions -q fisher
+        curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+      end
+
+      # Install nvm.fish if not already installed
+      if not functions -q nvm
+        fisher install jorgebucaran/nvm.fish
+      end
+
+      # Setup nvm to use node 22
+      nvm install lts/jod
+      nvm use lts/jod
+
+      # Install Claude CLI if not already installed
+      if not command -q claude
+        npm install -g @anthropic-ai/claude-code
+      end
     '';
   };
   

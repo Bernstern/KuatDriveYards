@@ -54,6 +54,7 @@
                 "shortcat"
                 "iterm2"
                 "signal"
+                "sonos"
               ];
               taps = [
                 "nikitabobko/tap"
@@ -61,6 +62,7 @@
               brews = [
                 "uv"
                 "fish"  
+                "gh"
               ];
             };
 
@@ -97,6 +99,11 @@
                 };
               };
             };
+
+            environment.systemPackages = with pkgs; [
+              docker
+              docker-compose
+            ];
           }
           
           home-manager.darwinModules.home-manager {
