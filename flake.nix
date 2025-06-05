@@ -55,6 +55,7 @@
                 "iterm2"
                 "signal"
                 "sonos"
+		"zen"
               ];
               taps = [
                 "nikitabobko/tap"
@@ -63,6 +64,7 @@
                 "uv"
                 "fish"  
                 "gh"
+		"neovim"
               ];
             };
 
