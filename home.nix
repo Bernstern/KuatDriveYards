@@ -11,25 +11,6 @@
     docker-compose
   ];
 
-  # Generate ghstack config with gh token at build time
-  home.file.".ghstackrc".source = pkgs.runCommand "ghstackrc" {} ''
-    TOKEN=$(${pkgs.gh}/bin/gh auth token 2>/dev/null || echo "")
-    if [ -n "$TOKEN" ]; then
-      cat > $out << EOF
-[ghstack]
-github_url = github.com
-github_username = bernstern
-github_oauth = $TOKEN
-EOF
-    else
-      cat > $out << EOF
-[ghstack]
-github_url = github.com
-github_username = bernstern
-# Run 'gh auth login' to authenticate, then rebuild
-EOF
-    fi
-  '';
 
   programs.fish = {
     enable = true;

@@ -108,13 +108,6 @@
               docker-compose
             ];
 
-            # Install global uv tools
-            system.activationScripts.extraActivation.text = ''
-              # Install uv tools system-wide
-              if command -v uv >/dev/null 2>&1; then
-                uv tool install ghstack 2>/dev/null || true
-              fi
-            '';
           }
           
           home-manager.darwinModules.home-manager {
