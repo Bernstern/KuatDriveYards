@@ -11,6 +11,26 @@
     docker-compose
   ];
 
+  # Generate ghstack config with gh token at build time
+  home.file.".ghstackrc".source = pkgs.runCommand "ghstackrc" {} ''
+    TOKEN=$(${pkgs.gh}/bin/gh auth token 2>/dev/null || echo "")
+    if [ -n "$TOKEN" ]; then
+      cat > $out << EOF
+[ghstack]
+github_url = github.com
+github_username = bernstern
+github_oauth = $TOKEN
+EOF
+    else
+      cat > $out << EOF
+[ghstack]
+github_url = github.com
+github_username = bernstern
+# Run 'gh auth login' to authenticate, then rebuild
+EOF
+    fi
+  '';
+
   programs.fish = {
     enable = true;
     shellAliases = {
@@ -22,6 +42,7 @@
       fish_add_path ~/.nix-profile/bin
       fish_add_path /nix/var/nix/profiles/default/bin
       fish_add_path /run/current-system/sw/bin
+      fish_add_path ~/.local/bin
 
       # Initialize Fisher
       if not functions -q fisher
@@ -33,9 +54,11 @@
         fisher install jorgebucaran/nvm.fish
       end
 
-      # Setup nvm to use node 22
-      nvm install lts/jod
-      nvm use lts/jod
+      # Setup nvm to use node 22 (suppress output)
+      if not test -d ~/.nvm/versions/node/ || test (count ~/.nvm/versions/node/*) -eq 0
+        nvm install lts/jod >/dev/null 2>&1
+      end
+      nvm use lts/jod >/dev/null 2>&1
 
       # Install Claude CLI if not already installed
       if not command -q claude
